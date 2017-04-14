@@ -1,0 +1,167 @@
+﻿// -*- C++ -*-
+/*!
+ * @file  RaspberryPiMouseSimulator.cpp
+ * @brief RaspberryPiMouse Simulator
+ * @date $Date$
+ *
+ * @author Nobuhiko Miyamoto <n-miyamoto@aist.go.jp>
+ *
+ * LGPL
+ *
+ * $Id$
+ */
+
+#include "RaspberryPiMouseSimulator.h"
+
+// Module specification
+// <rtc-template block="module_spec">
+static const char* raspberrypimousesimulator_spec[] =
+  {
+    "implementation_id", "RaspberryPiMouseSimulator",
+    "type_name",         "RaspberryPiMouseSimulator",
+    "description",       "RaspberryPiMouse Simulator",
+    "version",           "1.0.0",
+    "vendor",            "Miyamoto Nobuhiko",
+    "category",          "Simulator",
+    "activity_type",     "PERIODIC",
+    "kind",              "DataFlowComponent",
+    "max_instance",      "1",
+    "language",          "C++",
+    "lang_type",         "compile",
+    ""
+  };
+// </rtc-template>
+
+/*!
+ * @brief constructor
+ * @param manager Maneger Object
+ */
+RaspberryPiMouseSimulator::RaspberryPiMouseSimulator(RTC::Manager* manager)
+    // <rtc-template block="initializer">
+  : RTC::DataFlowComponentBase(manager)
+
+    // </rtc-template>
+{
+}
+
+/*!
+ * @brief destructor
+ */
+RaspberryPiMouseSimulator::~RaspberryPiMouseSimulator()
+{
+}
+
+
+
+RTC::ReturnCode_t RaspberryPiMouseSimulator::onInitialize()
+{
+  // Registration: InPort/OutPort/Service
+  // <rtc-template block="registration">
+  // Set InPort buffers
+  
+  // Set OutPort buffer
+  
+  // Set service provider to Ports
+  
+  // Set service consumers to Ports
+  
+  // Set CORBA Service Ports
+  
+  // </rtc-template>
+
+  // <rtc-template block="bind_config">
+  // </rtc-template>
+  
+  return RTC::RTC_OK;
+}
+
+/*
+RTC::ReturnCode_t RaspberryPiMouseSimulator::onFinalize()
+{
+  return RTC::RTC_OK;
+}
+*/
+
+/*
+RTC::ReturnCode_t RaspberryPiMouseSimulator::onStartup(RTC::UniqueId ec_id)
+{
+  return RTC::RTC_OK;
+}
+*/
+
+/*
+RTC::ReturnCode_t RaspberryPiMouseSimulator::onShutdown(RTC::UniqueId ec_id)
+{
+  return RTC::RTC_OK;
+}
+*/
+
+
+RTC::ReturnCode_t RaspberryPiMouseSimulator::onActivated(RTC::UniqueId ec_id)
+{
+  return RTC::RTC_OK;
+}
+
+
+RTC::ReturnCode_t RaspberryPiMouseSimulator::onDeactivated(RTC::UniqueId ec_id)
+{
+  return RTC::RTC_OK;
+}
+
+
+RTC::ReturnCode_t RaspberryPiMouseSimulator::onExecute(RTC::UniqueId ec_id)
+{
+  return RTC::RTC_OK;
+}
+
+/*
+RTC::ReturnCode_t RaspberryPiMouseSimulator::onAborting(RTC::UniqueId ec_id)
+{
+  return RTC::RTC_OK;
+}
+*/
+
+/*
+RTC::ReturnCode_t RaspberryPiMouseSimulator::onError(RTC::UniqueId ec_id)
+{
+  return RTC::RTC_OK;
+}
+*/
+
+/*
+RTC::ReturnCode_t RaspberryPiMouseSimulator::onReset(RTC::UniqueId ec_id)
+{
+  return RTC::RTC_OK;
+}
+*/
+
+/*
+RTC::ReturnCode_t RaspberryPiMouseSimulator::onStateUpdate(RTC::UniqueId ec_id)
+{
+  return RTC::RTC_OK;
+}
+*/
+
+/*
+RTC::ReturnCode_t RaspberryPiMouseSimulator::onRateChanged(RTC::UniqueId ec_id)
+{
+  return RTC::RTC_OK;
+}
+*/
+
+
+
+extern "C"
+{
+ 
+  void RaspberryPiMouseSimulatorInit(RTC::Manager* manager)
+  {
+    coil::Properties profile(raspberrypimousesimulator_spec);
+    manager->registerFactory(profile,
+                             RTC::Create<RaspberryPiMouseSimulator>,
+                             RTC::Delete<RaspberryPiMouseSimulator>);
+  }
+  
+};
+
+
