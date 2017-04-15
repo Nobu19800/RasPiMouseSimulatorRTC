@@ -573,6 +573,7 @@ void RasPiMouseSimulatorObj::m_nearCallback(dGeomID o1, dGeomID o2)
 
 		for (int i=0; i<n; i++) {
 			contact[i].surface.mode = dContactApprox1|dContactSoftERP|dContactSoftCFM|dContactSlip1|dContactSlip2;
+			//contact[i].surface.mode =  dContactSoftERP | dContactSoftCFM;
 
 
 			if(o1 == supportPlate[0].geom || o2 == supportPlate[0].geom || o1 == supportPlate[1].geom || o2 == supportPlate[1].geom)
@@ -581,7 +582,8 @@ void RasPiMouseSimulatorObj::m_nearCallback(dGeomID o1, dGeomID o2)
 			}
 			else
 			{
-				contact[i].surface.mu   = 200.0;
+				//contact[i].surface.mu   = dInfinity;
+				contact[i].surface.mu = 200.0;
 			}
 			
 			contact[i].surface.slip1 = 0.001;
@@ -670,7 +672,7 @@ void RasPiMouseSimulatorObj::control()
 {
 	double vx = RasPiMouse.target_vx;
 	double va = RasPiMouse.target_va;
-	double wheel_distance = ((wheelLeft.y - wheelLeft.lz / 2.0) - (wheelRight.y - wheelRight.lz/2.0)) / 2.0;
+	double wheel_distance = (wheelLeft.y - wheelRight.y) / 2.0;
 	double wheel_radius = wheelLeft.lx;
 
 	double right_motor_speed = (vx + va*wheel_distance) / wheel_radius;
@@ -694,15 +696,24 @@ void RasPiMouseSimulatorObj::control()
 
 	//std::cout << dJointGetHingeParam(wheelRight.joint, dParamVel) << "\t" << dJointGetHingeParam(wheelLeft.joint, dParamVel) << std::endl;
 
-	RasPiMouse.current_px += current_vx*st;
-	RasPiMouse.current_py += current_vy*st;
-	RasPiMouse.current_pa += current_va*st;
+	//RasPiMouse.current_px += current_vx*st;
+	//RasPiMouse.current_py += current_vy*st;
+	//RasPiMouse.current_pa += current_va*st;
 
-	if (RasPiMouse.current_pa > M_PI * 2)
+	dVector3 b;
+	dBodyGetRelPointPos(centorUnit.body, DEFAULT_WHEEL_X, 0, 0, b);
+	//const dReal *b = dBodyGetPosition(centorUnit.body);
+	RasPiMouse.current_px = b[0];
+	RasPiMouse.current_py = b[1];
+	const dReal *r = dBodyGetRotation(centorUnit.body);
+	RasPiMouse.current_pa = atan2(r[4],r[0]);
+	//std::cout << b[0] << "\t" << b[1] << std::endl;
+	//std::cout << RasPiMouse.current_px << "\t" << RasPiMouse.current_py << std::endl;
+	/*if (RasPiMouse.current_pa > M_PI * 2)
 	{
-		//std::cout << RasPiMouse.current_pa << std::endl;
+		std::cout << RasPiMouse.current_pa << std::endl;
 		RasPiMouse.current_pa -= M_PI * 2;
-	}
+	}*/
 }
 
 /**
