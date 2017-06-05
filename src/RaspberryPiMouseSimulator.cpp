@@ -78,8 +78,10 @@ RaspberryPiMouseSimulator::~RaspberryPiMouseSimulator()
 	delete m_so;
 	if (m_dt)
 	{
+		m_dt->stop();
 		delete m_dt;
 	}
+
 }
 
 
@@ -164,6 +166,7 @@ RTC::ReturnCode_t RaspberryPiMouseSimulator::onActivated(RTC::UniqueId ec_id)
 
 		m_dt->activate();
 	}
+	
 	if (m_dt)
 	{
 		m_dt->fps = 1.0 / m_draw_time;
@@ -184,6 +187,7 @@ RTC::ReturnCode_t RaspberryPiMouseSimulator::onActivated(RTC::UniqueId ec_id)
 
 RTC::ReturnCode_t RaspberryPiMouseSimulator::onDeactivated(RTC::UniqueId ec_id)
 {
+
   return RTC::RTC_OK;
 }
 

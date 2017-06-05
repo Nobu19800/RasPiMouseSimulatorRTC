@@ -11,6 +11,7 @@
 
 
 
+
 bool exist_file(const char* path)
 {
 #ifdef WIN32
@@ -25,6 +26,7 @@ bool exist_file(const char* path)
 	}
 #else
 	struct stat st;
+	int ret = stat(path, &st);
 	if (ret == 0) {
 		if((st.st_mode & S_IFMT) != S_IFDIR)
 		{
@@ -37,7 +39,7 @@ bool exist_file(const char* path)
 	}
 	else
 	{
-		return true;
+		return false;
 	}
 #endif
 }
@@ -56,6 +58,7 @@ bool exist_directory(const char* path)
 	}
 #else
 	struct stat st;
+	int ret = stat(path, &st);
 	if (ret == 0) {
 		if ((st.st_mode & S_IFMT) == S_IFDIR)
 		{
@@ -68,7 +71,7 @@ bool exist_directory(const char* path)
 	}
 	else
 	{
-		return true;
+		return false;
 	}
 #endif
 }
@@ -79,16 +82,23 @@ std::string search_file(const char* filename, const char* env, const char* delim
 	char* buf = 0;
 	size_t sz = 0;
 	std::string val = "";
+
+#ifdef WIN32
 	if (_dupenv_s(&buf, &sz, env) == 0)
 	{
+#else
+	buf = getenv( env );
+	{
+#endif
 		if (!buf)
 		{
 			return val;
 		}
 		val = buf;
 
-
+#ifdef WIN32
 		delete buf;
+#endif
 		std::vector<std::string> split_txt = coil::split(val, delim);
 		for (std::vector<std::string>::iterator it = split_txt.begin(); it != split_txt.end(); ++it) {
 			std::string tmp = (*it);
@@ -131,8 +141,10 @@ std::string search_file(const char* filename, const char* env, const char* delim
 		}
 		return "";
 	}
+#ifdef WIN32
 	else
 	{
 		return "";
 	}
+#endif
 }

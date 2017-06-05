@@ -4,12 +4,12 @@
 *
 */
 
-#include <iostream>
+
 #include "RasPiMouseSimulatorObj.h"
 #include <fstream>
 #include <coil/stringutil.h>
 
-RasPiMouseSimulatorObj *obj = NULL;
+RasPiMouseSimulatorObj *obj_raspisim = NULL;
 
 
 IRSensorData::IRSensorData():
@@ -199,7 +199,7 @@ RasPiMouseSimulatorObj::RasPiMouseSimulatorObj()
 	makeRobot();
 	//makePlane(100,100,10);
 
-	obj = this;
+	obj_raspisim = this;
 }
 
 /**
@@ -604,9 +604,9 @@ void RasPiMouseSimulatorObj::m_nearCallback(dGeomID o1, dGeomID o2)
 */
 static void nearCallback(void *data, dGeomID o1, dGeomID o2) {
 	
-	if(obj)
+	if(obj_raspisim)
 	{
-		obj->m_nearCallback(o1, o2);
+		obj_raspisim->m_nearCallback(o1, o2);
 	}
   
 		

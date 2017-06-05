@@ -7,7 +7,7 @@
 #ifndef RasPiMouseSIMULATOROBJ_H
 #define RasPiMouseSIMULATOROBJ_H
 
-#define dDOUBLE
+//#define dDOUBLE
 
 #include <coil/Mutex.h>
 #include <fstream>
