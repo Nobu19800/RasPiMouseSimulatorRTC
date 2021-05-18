@@ -75,12 +75,12 @@ RaspberryPiMouseSimulator::RaspberryPiMouseSimulator(RTC::Manager* manager)
  */
 RaspberryPiMouseSimulator::~RaspberryPiMouseSimulator()
 {
-	delete m_so;
 	if (m_dt)
 	{
 		m_dt->stop();
 		delete m_dt;
 	}
+	delete m_so;
 
 }
 

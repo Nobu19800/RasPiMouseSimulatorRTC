@@ -8,6 +8,7 @@
 #include "RasPiMouseSimulatorObj.h"
 #include <fstream>
 #include <coil/stringutil.h>
+#include <coil/Guard.h>
 
 RasPiMouseSimulatorObj *obj_raspisim = NULL;
 
@@ -474,7 +475,7 @@ void RasPiMouseSimulatorObj::setBall(MyLink *body1, MyLink *body2)
 */
 void RasPiMouseSimulatorObj::makeRobot()
 {
-	mu.lock();
+	coil::Guard<coil::Mutex> guard(mu);
 	dMatrix3 R;
 	setBox(&centorUnit);
 	setCylinder(&wheelLeft);
@@ -521,9 +522,6 @@ void RasPiMouseSimulatorObj::makeRobot()
 	
 
 	pause = true;
-
-	mu.unlock();
-
 	
 }
 
@@ -766,7 +764,7 @@ void RasPiMouseSimulatorObj::update()
 {
 	if(pause)
 	{
-		mu.lock();
+		coil::Guard<coil::Mutex> guard(mu);
 		control();
 
 		setIRSensorRay();
@@ -774,7 +772,6 @@ void RasPiMouseSimulatorObj::update()
 		dSpaceCollide(space,0,&nearCallback);
 		dWorldStep(world, st);
 		dJointGroupEmpty(contactgroup);
-		mu.unlock();
 
 	}
 }
@@ -784,7 +781,7 @@ void RasPiMouseSimulatorObj::update()
 */
 void RasPiMouseSimulatorObj::destroyRobot()
 {
-	mu.lock();
+	coil::Guard<coil::Mutex> guard(mu);
 	pause = false;
 
 	dJointDestroy(wheelLeft.joint);
@@ -871,12 +868,11 @@ void RasPiMouseSimulatorObj::destroyRobot()
 	}
 	blocks.clear();
 
-	mu.unlock();
 }
 
 void RasPiMouseSimulatorObj::makePlane(double lx, double ly, double lz)
 {
-	mu.lock();
+	coil::Guard<coil::Mutex> guard(mu);
 	plane.m = DEFAULT_BLOCK_MASS;
 	plane.lx = lx;
 	plane.ly = ly;
@@ -895,7 +891,6 @@ void RasPiMouseSimulatorObj::makePlane(double lx, double ly, double lz)
 	dJointSetFixed(plane.joint);
 
 	plane_exist = true;
-	mu.unlock();
 }
 
 /**
@@ -903,7 +898,7 @@ void RasPiMouseSimulatorObj::makePlane(double lx, double ly, double lz)
 */
 void RasPiMouseSimulatorObj::makeBlock(double x, double y, double z, double lx, double ly, double lz, double r)
 {
-	mu.lock();
+	coil::Guard<coil::Mutex> guard(mu);
 	MyLink block;
 	block.m = DEFAULT_BLOCK_MASS;
 	block.lx = lx;
@@ -927,7 +922,6 @@ void RasPiMouseSimulatorObj::makeBlock(double x, double y, double z, double lx, 
 	dJointSetFixed(block.joint);
 
 	blocks.push_back(block);
-	mu.unlock();
 }
 
 

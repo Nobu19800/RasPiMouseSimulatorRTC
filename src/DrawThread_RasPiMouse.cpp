@@ -4,6 +4,7 @@
 #include <coil/stringutil.h>
 #include <coil/Time.h>
 #include <coil/TimeValue.h>
+#include <coil/Guard.h>
 
 
 //std::ofstream ofs( "test.txt" );
@@ -173,7 +174,7 @@ void DrawThread_RasPiMouse::drawRobot()
 {
 	if(m_so->pause)
 	{
-		m_so->mu.lock();
+		coil::Guard<coil::Mutex> guard(m_so->mu);
 
 		drawBox(&m_so->centorUnit);
 
@@ -247,8 +248,6 @@ void DrawThread_RasPiMouse::drawRobot()
 		for (std::vector<MyLink>::iterator itr = m_so->blocks.begin(); itr != m_so->blocks.end(); ++itr) {
 			drawBox(&(*itr));
 		}
-
-		m_so->mu.unlock();
 	}
 }
 
@@ -259,7 +258,7 @@ void DrawThread_RasPiMouse::drawRobot()
 */
 void DrawThread_RasPiMouse::resetCameraPosition()
 {
-	m_so->mu.lock();
+	coil::Guard<coil::Mutex> guard(m_so->mu);
 	if (RCP_flag)
 	{
 		const dReal *pos = dBodyGetPosition(m_so->centorUnit.body);
@@ -273,7 +272,6 @@ void DrawThread_RasPiMouse::resetCameraPosition()
 		RCP_flag = false;
 
 	}
-	m_so->mu.unlock();
 }
 
 
@@ -282,9 +280,8 @@ void DrawThread_RasPiMouse::resetCameraPosition()
 */
 void DrawThread_RasPiMouse::setRCPFlag()
 {
-	m_so->mu.lock();
+	coil::Guard<coil::Mutex> guard(m_so->mu);
 	RCP_flag = true;
-	m_so->mu.unlock();
 }
 
 
@@ -294,9 +291,10 @@ void DrawThread_RasPiMouse::setRCPFlag()
 */
 void DrawThread_RasPiMouse::stop()
 {
-	m_so->mu.lock();
+	
+	coil::Guard<coil::Mutex> guard(m_so->mu);
 	stop_flag = true;
-	m_so->mu.unlock();
+	
 	wait();
 	
 }
