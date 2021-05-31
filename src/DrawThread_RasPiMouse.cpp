@@ -291,9 +291,10 @@ void DrawThread_RasPiMouse::setRCPFlag()
 */
 void DrawThread_RasPiMouse::stop()
 {
-	
-	coil::Guard<coil::Mutex> guard(m_so->mu);
-	stop_flag = true;
+	{
+		coil::Guard<coil::Mutex> guard(m_so->mu);
+		stop_flag = true;
+	}
 	
 	wait();
 	

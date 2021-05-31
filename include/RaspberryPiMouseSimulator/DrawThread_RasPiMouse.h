@@ -72,8 +72,8 @@ public:
 		
 
 		double fps;
-		bool RCP_flag;
-		bool stop_flag;
+		volatile bool RCP_flag;
+		volatile bool stop_flag;
 
 private:
 	RasPiMouseSimulatorObj *m_so;
