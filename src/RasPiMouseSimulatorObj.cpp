@@ -475,7 +475,7 @@ void RasPiMouseSimulatorObj::setBall(MyLink *body1, MyLink *body2)
 */
 void RasPiMouseSimulatorObj::makeRobot()
 {
-	coil::Guard<coil::Mutex> guard(mu);
+	//coil::Guard<coil::Mutex> guard(mu);
 	dMatrix3 R;
 	setBox(&centorUnit);
 	setCylinder(&wheelLeft);
@@ -764,7 +764,7 @@ void RasPiMouseSimulatorObj::update()
 {
 	if(pause)
 	{
-		coil::Guard<coil::Mutex> guard(mu);
+		//coil::Guard<coil::Mutex> guard(mu);
 		control();
 
 		setIRSensorRay();
@@ -781,7 +781,7 @@ void RasPiMouseSimulatorObj::update()
 */
 void RasPiMouseSimulatorObj::destroyRobot()
 {
-	coil::Guard<coil::Mutex> guard(mu);
+	//coil::Guard<coil::Mutex> guard(mu);
 	pause = false;
 
 	dJointDestroy(wheelLeft.joint);
@@ -872,7 +872,7 @@ void RasPiMouseSimulatorObj::destroyRobot()
 
 void RasPiMouseSimulatorObj::makePlane(double lx, double ly, double lz)
 {
-	coil::Guard<coil::Mutex> guard(mu);
+	//coil::Guard<coil::Mutex> guard(mu);
 	plane.m = DEFAULT_BLOCK_MASS;
 	plane.lx = lx;
 	plane.ly = ly;
@@ -898,7 +898,7 @@ void RasPiMouseSimulatorObj::makePlane(double lx, double ly, double lz)
 */
 void RasPiMouseSimulatorObj::makeBlock(double x, double y, double z, double lx, double ly, double lz, double r)
 {
-	coil::Guard<coil::Mutex> guard(mu);
+	//coil::Guard<coil::Mutex> guard(mu);
 	MyLink block;
 	block.m = DEFAULT_BLOCK_MASS;
 	block.lx = lx;

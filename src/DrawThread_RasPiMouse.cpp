@@ -174,7 +174,7 @@ void DrawThread_RasPiMouse::drawRobot()
 {
 	if(m_so->pause)
 	{
-		coil::Guard<coil::Mutex> guard(m_so->mu);
+		//coil::Guard<coil::Mutex> guard(m_so->mu);
 
 		drawBox(&m_so->centorUnit);
 
@@ -258,7 +258,7 @@ void DrawThread_RasPiMouse::drawRobot()
 */
 void DrawThread_RasPiMouse::resetCameraPosition()
 {
-	coil::Guard<coil::Mutex> guard(m_so->mu);
+	//coil::Guard<coil::Mutex> guard(m_so->mu);
 	if (RCP_flag)
 	{
 		const dReal *pos = dBodyGetPosition(m_so->centorUnit.body);
@@ -280,7 +280,7 @@ void DrawThread_RasPiMouse::resetCameraPosition()
 */
 void DrawThread_RasPiMouse::setRCPFlag()
 {
-	coil::Guard<coil::Mutex> guard(m_so->mu);
+	//coil::Guard<coil::Mutex> guard(m_so->mu);
 	RCP_flag = true;
 }
 
@@ -292,7 +292,7 @@ void DrawThread_RasPiMouse::setRCPFlag()
 void DrawThread_RasPiMouse::stop()
 {
 	{
-		coil::Guard<coil::Mutex> guard(m_so->mu);
+		//coil::Guard<coil::Mutex> guard(m_so->mu);
 		stop_flag = true;
 	}
 	
