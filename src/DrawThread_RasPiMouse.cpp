@@ -1,10 +1,9 @@
 #include <fstream>
+#include <thread>
+#include <chrono>
 #include "DrawThread_RasPiMouse.h"
 #include "searchFile.h"
 #include <coil/stringutil.h>
-#include <coil/Time.h>
-#include <coil/TimeValue.h>
-#include <coil/Guard.h>
 
 
 //std::ofstream ofs( "test.txt" );
@@ -43,8 +42,7 @@ DrawThread_RasPiMouse::DrawThread_RasPiMouse(RasPiMouseSimulatorObj *so, double 
 */
 void simLoop(int pause)
 {
-
-	coil::sleep((coil::TimeValue)(1.0/obj_drawthread->fps));
+	std::this_thread::sleep_for(std::chrono::duration<float>(1.0/obj_drawthread->fps));
 
 
 	if (obj_drawthread)
@@ -174,7 +172,7 @@ void DrawThread_RasPiMouse::drawRobot()
 {
 	if(m_so->pause)
 	{
-		coil::Guard<coil::Mutex> guard(m_so->mu);
+		std::lock_guard<std::mutex> lock(*(m_so->mu));
 
 		drawBox(&m_so->centorUnit);
 
@@ -258,7 +256,7 @@ void DrawThread_RasPiMouse::drawRobot()
 */
 void DrawThread_RasPiMouse::resetCameraPosition()
 {
-	coil::Guard<coil::Mutex> guard(m_so->mu);
+	std::lock_guard<std::mutex> lock(*(m_so->mu));
 	if (RCP_flag)
 	{
 		const dReal *pos = dBodyGetPosition(m_so->centorUnit.body);
@@ -280,7 +278,7 @@ void DrawThread_RasPiMouse::resetCameraPosition()
 */
 void DrawThread_RasPiMouse::setRCPFlag()
 {
-	coil::Guard<coil::Mutex> guard(m_so->mu);
+	std::lock_guard<std::mutex> lock(*(m_so->mu));
 	RCP_flag = true;
 }
 
@@ -292,7 +290,7 @@ void DrawThread_RasPiMouse::setRCPFlag()
 void DrawThread_RasPiMouse::stop()
 {
 	{
-		coil::Guard<coil::Mutex> guard(m_so->mu);
+		std::lock_guard<std::mutex> lock(*(m_so->mu));
 		stop_flag = true;
 	}
 	

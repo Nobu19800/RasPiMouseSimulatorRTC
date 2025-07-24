@@ -9,7 +9,9 @@
 
 //#define dDOUBLE
 
-#include <coil/Mutex.h>
+#include <mutex>
+#include <condition_variable>
+#include <memory>
 #include <fstream>
 
 #include <stdio.h>
@@ -272,7 +274,7 @@ public:
 	*@brief デストラクタ
 	*/
 	~RasPiMouseSimulatorObj();
-	coil::Mutex mu;
+	std::shared_ptr<std::mutex> mu;
 	MyLink centorUnit, wheelLeft, wheelRight, topPlate[3], middlePlate, bottomPlate[2], RaspPi, supportPlate[2];
 	dGeomID IRSensor_ray[4];
 	double current_vx, current_vy, current_va;
